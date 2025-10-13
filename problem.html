@@ -32,8 +32,8 @@
         const questionData = quiz.questions[questionIndex];
         const isLastQuestionInSet = questionIndex === quiz.questions.length - 1;
 
-        document.title = `ビデオ/Video${quizId+1} - 問題/Question ${questionIndex + 1}`;
-        document.getElementById('question-title').textContent = `ビデオ/Video${quizId+1} - 問題/Question ${questionIndex + 1}/${quiz.questions.length}`;
+        document.title = `Video${quizId+1} - Q ${questionIndex + 1}`;
+        document.getElementById('question-title').textContent = `Video${quizId+1} - Q ${questionIndex + 1}/${quiz.questions.length}`;
         document.getElementById('question-text').textContent = questionData.text;
 
         const optionsContainer = document.getElementById('options-container');
