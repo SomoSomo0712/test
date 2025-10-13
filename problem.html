@@ -12,9 +12,9 @@
         <p id="question-text"></p>
         <div id="options-container" class="options-container"></div>
         <div class="button-container">
-            <button id="back-btn" class="secondary">戻る</button>
-            <button id="video-btn" class="secondary">この問題の動画に戻る</button>
-            <button id="next-btn" class="primary">次へ</button>
+            <button id="back-btn" class="secondary">戻る/Go Back</button>
+            <button id="video-btn" class="secondary">この問題の動画に戻る/Return to the video of this question</button>
+            <button id="next-btn" class="primary">次へ/Next</button>
         </div>
     </div>
 
@@ -25,15 +25,15 @@
         const questionIndex = parseInt(urlParams.get('q'), 10);
 
         if (isNaN(quizId) || isNaN(questionIndex) || !QUIZ_DATA[quizId] || !QUIZ_DATA[quizId].questions[questionIndex]) {
-            document.body.innerHTML = '<h1>エラー: 指定された問題が見つかりません。</h1>';
+            document.body.innerHTML = '<h1>エラー: 指定された問題が見つかりません。</h1>/<h1>Error: The specified problem could not be found.</h1>';
         }
 
         const quiz = QUIZ_DATA.find(q => q.id == quizId);
         const questionData = quiz.questions[questionIndex];
         const isLastQuestionInSet = questionIndex === quiz.questions.length - 1;
 
-        document.title = `ビデオ${quizId+1} - 問題 ${questionIndex + 1}`;
-        document.getElementById('question-title').textContent = `ビデオ${quizId+1} - 問題 ${questionIndex + 1}/${quiz.questions.length}`;
+        document.title = `ビデオ/Video${quizId+1} - 問題/Question ${questionIndex + 1}`;
+        document.getElementById('question-title').textContent = `ビデオ/Video${quizId+1} - 問題/Question ${questionIndex + 1}/${quiz.questions.length}`;
         document.getElementById('question-text').textContent = questionData.text;
 
         const optionsContainer = document.getElementById('options-container');
@@ -100,7 +100,7 @@
         document.getElementById('next-btn').addEventListener('click', () => {
             const selectedOption = document.querySelector('input[name="answer"]:checked');
             if (!selectedOption) {
-                alert('回答を選択してください。');
+                alert('回答を選択してください。/Please select an answer.');
                 return;
             }
             saveSessionTime();

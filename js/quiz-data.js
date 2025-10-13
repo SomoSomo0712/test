@@ -4,7 +4,7 @@ const QUIZ_DATA = [
   {
     // === 1番目のビデオとクイズセット ===
     id: 0,
-    title: "ビデオ1", // スプレッドシートに記録されるタイトル
+    title: "Video1", // スプレッドシートに記録されるタイトル
     videoId: 'u4k7CWtDIwY', // 1番目のビデオID (ご自身のものに書き換えてください)
     questions: [
       { // 1問目
@@ -37,7 +37,7 @@ const QUIZ_DATA = [
   {
     // === 2番目のビデオとクイズセット ===
     id: 1,
-    title: "ビデオ2",
+    title: "Video2",
     videoId: 'ZuiCMC8NW98', // 2番目のビデオID (ご自身のものに書き換えてください)
     questions: [
       { // 1問目
@@ -70,7 +70,7 @@ const QUIZ_DATA = [
   {
     // === 3番目のビデオとクイズセット ===
     id: 2,
-    title: "ビデオ3",
+    title: "Video3",
     videoId: 'LW3nUSIla3w', // 2番目のビデオID (ご自身のものに書き換えてください)
     questions: [
       { // 1問目
@@ -103,7 +103,7 @@ const QUIZ_DATA = [
   {
     // === 4番目のビデオとクイズセット ===
     id: 3,
-    title: "ビデオ4",
+    title: "Video4",
     videoId: 'WsTecmry4wI', // 2番目のビデオID (ご自身のものに書き換えてください)
     questions: [
       { // 1問目
@@ -136,7 +136,7 @@ const QUIZ_DATA = [
   {
     // === 5番目のビデオとクイズセット ===
     id: 4,
-    title: "ビデオ5",
+    title: "Video5",
     videoId: 'M8UzfMj6Wjk', // 2番目のビデオID (ご自身のものに書き換えてください)
     questions: [
       { // 1問目
@@ -169,7 +169,7 @@ const QUIZ_DATA = [
   {
     // === 6番目のビデオとクイズセット ===
     id: 5,
-    title: "ビデオ6",
+    title: "Video6",
     videoId: 'k5XR98X3bVk', // 2番目のビデオID (ご自身のものに書き換えてください)
     questions: [
       { // 1問目
@@ -202,7 +202,7 @@ const QUIZ_DATA = [
   {
     // === 7番目のビデオとクイズセット ===
     id: 6,
-    title: "ビデオ7",
+    title: "Video7",
     videoId: 'dj1qUTDKV9k', // 2番目のビデオID (ご自身のものに書き換えてください)
     questions: [
       { // 1問目
