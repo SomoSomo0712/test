@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>最終テスト結果</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>最終テスト結果</h1>
+        <p id="result-summary"></p>
+        <p id="submission-status"></p>
+        <div id="results-container">
+            <ul id="results-list"></ul>
+        </div>
+        <div class="button-container">
+             <a href="index.html" style="text-decoration: none;">
+                <button class="primary">トップページに戻る</button>
+            </a>
+        </div>
+    </div>
+
+    <script src="./js/quiz-data.js"></script>
+    <script>
+        window.addEventListener('load', () => {
+            console.log("=============== localStorageデータ確認 ===============");
+
+            // 保存されている各キーをコンソールに出力
+            console.log("【受験者情報 (userInfo)】:", localStorage.getItem('quizUserInfo'));
+            console.log("【解答結果 (userResults)】:", localStorage.getItem('quizUserResults'));
+            console.log("【時間ログ (timeLogs)】:", localStorage.getItem('quizTimeLogs'));
+            console.log("【移動ログ (pathLog)】:", localStorage.getItem('quizPathLog'));
+            console.log("【最終閲覧場所 (lastViewed)】:", localStorage.getItem('quizLastViewed'));
+            
+            // JSON文字列をオブジェクトに変換して、中身を分かりやすく表示
+            try {
+                console.log("【解答結果 (オブジェクト形式)】:", JSON.parse(localStorage.getItem('quizUserResults')));
+            } catch(e) {
+                console.error("解答結果の解析に失敗しました。データが壊れている可能性があります。");
+            }
+
+            console.log("=====================================================");
+            });
+
+        // ★★ 必ず、再デプロイした最新のGASウェブアプリURLに書き換えてください ★★
+        const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwrxTcF61qjhNO98EkN3pXYS2YrjNFjUAVvzyCEMFLsKJBC42OFs76mCpqz4pAqH7EPeg/exec';
+
+        window.addEventListener('load', () => {
+            const userInfo = JSON.parse(localStorage.getItem('quizUserInfo'));
+            let userResults = JSON.parse(localStorage.getItem('quizUserResults'));
+            const timeLogs = JSON.parse(localStorage.getItem('quizTimeLogs'));
+            const pathLogArray = JSON.parse(localStorage.getItem('quizPathLog'));
+
+            if (!userInfo || !userResults) {
+                document.body.innerHTML = '<h1>エラー: テストデータが見つかりませんでした。</h1>';
+                return;
+            }
+            
+            userResults.forEach(result => {
+                // フィードバック質問(index 5, 6)には時間は無いので、クイズ問題(index 0-4)にだけ時間を付与
+                if (result.questionIndex < 5) { 
+                    const timeLogKey = `${result.quizId}-${result.questionIndex}`;
+                    result.time = (timeLogs[timeLogKey] || 0).toFixed(2);
+                }
+            });
+            
+            const pathLog = pathLogArray ? pathLogArray.join(' -> ') : 'ログがありません';
+
+            const resultsList = document.getElementById('results-list');
+            const resultSummary = document.getElementById('result-summary');
+            userResults.sort((a, b) => {
+                if (a.quizId !== b.quizId) return a.quizId - b.quizId;
+                return a.questionIndex - b.questionIndex;
+            });
+            
+            let score = 0;
+            userResults.forEach(result => {
+                if (result.isCorrect) score++;
+
+                const quizTitle = QUIZ_DATA.find(q => q.id == result.quizId).title;
+                const li = document.createElement('li');
+                const isFeedback = result.questionIndex >= 5;
+
+                let contentHTML = `<strong>[${quizTitle}] Q${result.questionIndex + 1}: ${result.question}</strong><br>
+                                   あなたの回答: ${result.answer}`;
+                
+                if (!isFeedback) {
+                    const correctIndicator = result.isCorrect ? '✅' : '❌';
+                    contentHTML += ` ${correctIndicator}<br>滞在合計時間: ${result.time} 秒`;
+                }
+                li.innerHTML = contentHTML;
+                resultsList.appendChild(li);
+            });
+            
+            const totalQuestions = QUIZ_DATA.reduce((total, quiz) => total + quiz.questions.length, 0);
+            const scorePercentage = (score / totalQuestions) * 100;
+            resultSummary.innerHTML = `正解数: ${score} / ${totalQuestions} (${scorePercentage.toFixed(0)}%) <br> 全ての学習お疲れ様でした。`;
+
+            document.getElementById('submission-status').textContent = '結果を送信中...';
+            const dataToSubmit = { userInfo, userResults, score, scorePercentage: `${scorePercentage.toFixed(0)}%`, pathLog };
+            
+            fetch(GAS_WEB_APP_URL, {
+                method: 'POST', mode: 'no-cors', cache: 'no-cache',
+                headers: { 'Content-Type': 'application/json' }, redirect: 'follow',
+                body: JSON.stringify(dataToSubmit)
+            })
+            .then(() => {
+                document.getElementById('submission-status').textContent = '結果が正常に記録されました。';
+                localStorage.removeItem('quizUserInfo');
+                localStorage.removeItem('quizUserResults');
+                localStorage.removeItem('quizTimeLogs');
+                localStorage.removeItem('quizPathLog');
+                localStorage.removeItem('quizLastViewed');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('submission-status').textContent = 'エラーが発生し、結果を記録できませんでした。';
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>動画視聴</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h2 id="video-title"></h2>
+        <p>テストを始める前に、以下の動画を視聴してください。</p>
+        <div class="video-wrapper">
+            <iframe id="youtube-player" src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div class="button-container">
+            <button id="back-btn" class="secondary" style="display: none;">前のセクションに戻る</button>
+            <button id="start-quiz-btn" class="primary">テストを開始する</button>
+        </div>
+        <div id="jump-back-container" style="margin-top: 2em; text-align: center;">
+            <!-- ここに「中断した場所に戻る」ボタンが動的に生成されます -->
+        </div>
+    </div>
+
+    <script src="./js/quiz-data.js"></script>
+    <script>
+        window.addEventListener('load', () => {
+            // --- 1. 現在のビデオIDをURLから取得 ---
+            const urlParams = new URLSearchParams(window.location.search);
+            const quizId = parseInt(urlParams.get('quiz'), 10);
+
+            // URLが不正な場合のガード処理
+            if (isNaN(quizId) || !QUIZ_DATA.find(q => q.id == quizId)) {
+                document.body.innerHTML = '<h1>エラー: 指定されたビデオが見つかりません。</h1>';
+                return;
+            }
+            
+            // --- 2. ページを動的に構築 ---
+            const quiz = QUIZ_DATA.find(q => q.id == quizId);
+            
+            document.getElementById('video-title').textContent = quiz.title;
+            document.getElementById('youtube-player').src = `https://www.youtube.com/embed/${quiz.videoId}`;
+            document.getElementById('start-quiz-btn').onclick = () => {
+                window.location.href = `problem.html?quiz=${quizId}&q=0`;
+            };
+
+            // 最初のビデオ(quizId=0)でなければ「戻る」ボタンを表示し、前のフィードバックページにリンク
+            if (quizId > 0) {
+                const backBtn = document.getElementById('back-btn');
+                backBtn.style.display = 'inline-block';
+                backBtn.onclick = () => {
+                    window.location.href = `feedback.html?quiz=${quizId - 1}`;
+                };
+            }
+
+            // --- 3. 移動ログを記録 ---
+            const pathLog = JSON.parse(localStorage.getItem('quizPathLog')) || [];
+            const pageId = `video-${quizId + 1}`;
+            if (pathLog[pathLog.length - 1] !== pageId) {
+                pathLog.push(pageId);
+                localStorage.setItem('quizPathLog', JSON.stringify(pathLog));
+            }
+
+            // --- 4. 「中断した場所に戻る」ボタンの生成ロジック ---
+            const jumpBackContainer = document.getElementById('jump-back-container');
+            jumpBackContainer.innerHTML = ''; // コンテナを毎回クリア
+            
+            // 新しいオブジェクト形式の「足跡」をlocalStorageから読み込む
+            const lastViewedJSON = localStorage.getItem('quizLastViewed');
+            
+            if (lastViewedJSON) {
+                const lastViewed = JSON.parse(lastViewedJSON);
+
+                // ★★【最重要】このビデオページが、中断した場所のビデオと一致する場合のみボタンを表示★★
+                if (lastViewed.quizId === quizId) {
+                    
+                    const title = document.createElement('h3');
+                    title.textContent = '中断した場所に戻る';
+                    title.style.color = '#2c3e50';
+                    jumpBackContainer.appendChild(title);
+                    
+                    const buttonWrapper = document.createElement('div');
+                    buttonWrapper.className = 'button-container';
+                    const resumeButton = document.createElement('button');
+                    resumeButton.className = 'primary';
+
+                    if (lastViewed.type === 'feedback') {
+                        // もしフィードバックページから来たなら
+                        resumeButton.textContent = `フィードバックに戻る`;
+                        resumeButton.onclick = () => {
+                            window.location.href = `feedback.html?quiz=${lastViewed.quizId}`;
+                        };
+                    } else if (lastViewed.type === 'problem') {
+                        // もし問題ページから来たなら
+                        const lastProblemNum = lastViewed.index + 1;
+                        resumeButton.textContent = `問題${lastProblemNum}に戻る`;
+                        resumeButton.onclick = () => {
+                            window.location.href = `problem.html?quiz=${lastViewed.quizId}&q=${lastViewed.index}`;
+                        };
+                    }
+
+                    buttonWrapper.appendChild(resumeButton);
+                    jumpBackContainer.appendChild(buttonWrapper);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

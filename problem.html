@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>問題</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h2 id="question-title"></h2>
+        <p id="question-text"></p>
+        <div id="options-container" class="options-container"></div>
+        <div class="button-container">
+            <button id="back-btn" class="secondary">戻る</button>
+            <button id="video-btn" class="secondary">この問題の動画に戻る</button>
+            <button id="next-btn" class="primary">次へ</button>
+        </div>
+    </div>
+
+    <script src="./js/quiz-data.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const quizId = parseInt(urlParams.get('quiz'), 10);
+        const questionIndex = parseInt(urlParams.get('q'), 10);
+
+        if (isNaN(quizId) || isNaN(questionIndex) || !QUIZ_DATA[quizId] || !QUIZ_DATA[quizId].questions[questionIndex]) {
+            document.body.innerHTML = '<h1>エラー: 指定された問題が見つかりません。</h1>';
+        }
+
+        const quiz = QUIZ_DATA.find(q => q.id == quizId);
+        const questionData = quiz.questions[questionIndex];
+        const isLastQuestionInSet = questionIndex === quiz.questions.length - 1;
+
+        document.title = `ビデオ${quizId+1} - 問題 ${questionIndex + 1}`;
+        document.getElementById('question-title').textContent = `ビデオ${quizId+1} - 問題 ${questionIndex + 1}/${quiz.questions.length}`;
+        document.getElementById('question-text').textContent = questionData.text;
+
+        const optionsContainer = document.getElementById('options-container');
+        optionsContainer.innerHTML = '';
+        questionData.options.forEach(optionText => {
+            const label = document.createElement('label');
+            const radio = document.createElement('input');
+            radio.type = 'radio'; radio.name = 'answer'; radio.value = optionText;
+            label.appendChild(radio);
+            label.appendChild(document.createTextNode(optionText));
+            optionsContainer.appendChild(label);
+        });
+
+        let entryTime = Date.now();
+        const timeLogKey = `${quizId}-${questionIndex}`;
+
+        const saveSessionTime = () => {
+            const timeLogs = JSON.parse(localStorage.getItem('quizTimeLogs')) || {};
+            const sessionDuration = (Date.now() - entryTime) / 1000;
+            timeLogs[timeLogKey] = (timeLogs[timeLogKey] || 0) + sessionDuration;
+            localStorage.setItem('quizTimeLogs', JSON.stringify(timeLogs));
+        };
+        
+        window.addEventListener('DOMContentLoaded', () => {
+            const lastViewed = {
+                type: 'problem',
+                quizId: quizId,
+                index: questionIndex
+            };
+            // ▼▼▼【重要】削除されていたこの行を復活させます ▼▼▼
+            localStorage.setItem('quizLastViewed', JSON.stringify(lastViewed));
+            // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
+
+            const pathLog = JSON.parse(localStorage.getItem('quizPathLog')) || [];
+            const pageId = `problem-${quizId+1}-${questionIndex+1}`;
+            if (pathLog[pathLog.length - 1] !== pageId) {
+                pathLog.push(pageId);
+                localStorage.setItem('quizPathLog', JSON.stringify(pathLog));
+            }
+            const userResults = JSON.parse(localStorage.getItem('quizUserResults')) || [];
+            const savedResult = userResults.find(r => r.quizId === quizId && r.questionIndex === questionIndex);
+            if (savedResult) {
+                const radio = document.querySelector(`input[name="answer"][value="${savedResult.answer}"]`);
+                if (radio) radio.checked = true;
+            }
+        });
+        
+        window.addEventListener('beforeunload', saveSessionTime);
+
+        document.getElementById('back-btn').addEventListener('click', () => {
+            saveSessionTime();
+            if (questionIndex === 0) {
+                window.location.href = `video.html?quiz=${quizId}`;
+            } else {
+                window.location.href = `problem.html?quiz=${quizId}&q=${questionIndex - 1}`;
+            }
+        });
+
+        document.getElementById('video-btn').addEventListener('click', () => {
+            saveSessionTime();
+            window.location.href = `video.html?quiz=${quizId}`;
+        });
+
+        document.getElementById('next-btn').addEventListener('click', () => {
+            const selectedOption = document.querySelector('input[name="answer"]:checked');
+            if (!selectedOption) {
+                alert('回答を選択してください。');
+                return;
+            }
+            saveSessionTime();
+            
+            const userResults = JSON.parse(localStorage.getItem('quizUserResults')) || [];
+            const otherResults = userResults.filter(r => !(r.quizId === quizId && r.questionIndex === questionIndex));
+            const answer = selectedOption.value;
+            const newResult = {
+                quizId, questionIndex,
+                question: questionData.text,
+                answer,
+                isCorrect: answer === questionData.correctAnswer
+                // timeは最後にまとめて挿入
+            };
+            otherResults.push(newResult);
+            localStorage.setItem('quizUserResults', JSON.stringify(otherResults));
+            
+            if (isLastQuestionInSet) {
+                window.location.href = `feedback.html?quiz=${quizId}`;
+            } else {
+                window.location.href = `problem.html?quiz=${quizId}&q=${questionIndex + 1}`;
+            }
+        });
+    </script>
+</body>
+</html>

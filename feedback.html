@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>フィードバック</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .scale-container { display: flex; justify-content: space-between; align-items: center; margin: 1em 0; flex-wrap: wrap; }
+        .scale-container label { display: flex; flex-direction: column; align-items: center; cursor: pointer; padding: 0.5em; }
+        .scale-container input { margin-bottom: 0.5em; }
+        textarea { width: 100%; min-height: 100px; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-family: inherit; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 id="feedback-title"></h2>
+        
+        <div class="form-group">
+            <label><b>質問6:</b> ビデオ(クイズではありません)の読解難易度はどのくらいでしたか？ (1: とても簡単 〜 10: とても難しい)</label>
+            <div class="scale-container">
+                <label>1<br><input type="radio" name="difficulty" value="1" required></label>
+                <label>2<br><input type="radio" name="difficulty" value="2"></label>
+                <label>3<br><input type="radio" name="difficulty" value="3"></label>
+                <label>4<br><input type="radio" name="difficulty" value="4"></label>
+                <label>5<br><input type="radio" name="difficulty" value="5"></label>
+                <label>6<br><input type="radio" name="difficulty" value="6"></label>
+                <label>7<br><input type="radio" name="difficulty" value="7"></label>
+                <label>8<br><input type="radio" name="difficulty" value="8"></label>
+                <label>9<br><input type="radio" name="difficulty" value="9"></label>
+                <label>10<br><input type="radio" name="difficulty" value="10"></label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="feedback-text"><b>質問7:</b> ビデオやクイズについてわからなかった部分・不明だった部分を教えてください</label>
+            <textarea id="feedback-text" placeholder="特にない場合は「特になし」とご記入ください。"></textarea>
+        </div>
+
+        <div class="button-container">
+            <button id="back-btn" class="secondary">前の問題に戻る</button>
+            <!-- ▼▼▼「動画に戻る」ボタンを追加 ▼▼▼ -->
+            <button id="video-btn" class="secondary">このビデオに戻る</button>
+            <button id="next-btn" class="primary">次へ</button>
+        </div>
+    </div>
+
+    <script src="./js/quiz-data.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const quizId = parseInt(urlParams.get('quiz'), 10);
+        const isLastQuizSet = quizId === QUIZ_DATA.length - 1;
+
+        // ▼▼▼【重要】ページ表示時に「今フィードバックページにいる」という足跡を残す ▼▼▼
+        // 'feedback'という特別な文字列を保存する
+        // localStorage.setItem('quizLastViewedProblem', 'feedback');
+        window.addEventListener('DOMContentLoaded', () => {
+            const lastViewed = {
+                type: 'feedback',
+                quizId: quizId
+            };
+            localStorage.setItem('quizLastViewed', JSON.stringify(lastViewed));
+        });
+        // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
+
+        const quiz = QUIZ_DATA.find(q => q.id == quizId);
+        document.title = `フィードバック - ${quiz.title}`;
+        document.getElementById('feedback-title').textContent = `「${quiz.title}」についてのフィードバック`;
+        document.getElementById('next-btn').textContent = isLastQuizSet ? '最終結果を見る' : '次のビデオへ';
+
+        document.getElementById('back-btn').onclick = () => {
+            const lastQuestionIndex = quiz.questions.length - 1;
+            window.location.href = `problem.html?quiz=${quizId}&q=${lastQuestionIndex}`;
+        };
+        
+        // ▼▼▼「動画に戻る」ボタンの処理を追加 ▼▼▼
+        document.getElementById('video-btn').onclick = () => {
+            window.location.href = `video.html?quiz=${quizId}`;
+        };
+
+        document.getElementById('next-btn').addEventListener('click', () => {
+            const difficulty = document.querySelector('input[name="difficulty"]:checked');
+            const feedbackText = document.getElementById('feedback-text').value;
+            if (!difficulty) { alert('質問6の難易度を選択してください。'); return; }
+            if (!feedbackText.trim()) { alert('質問7に何かご記入ください。'); return; }
+            
+            const userResults = JSON.parse(localStorage.getItem('quizUserResults')) || [];
+            const result6 = { quizId, questionIndex: 5, question: "ビデオの読解難易度", answer: difficulty.value, isCorrect: null };
+            const result7 = { quizId, questionIndex: 6, question: "不明だった部分", answer: feedbackText, isCorrect: null };
+            const otherResults = userResults.filter(r => !(r.quizId === quizId && (r.questionIndex === 5 || r.questionIndex === 6)));
+            otherResults.push(result6, result7);
+            localStorage.setItem('quizUserResults', JSON.stringify(otherResults));
+
+            if (isLastQuizSet) {
+                window.location.href = 'results.html';
+            } else {
+                window.location.href = `video.html?quiz=${quizId + 1}`;
+            }
+        });
+    </script>
+</body>
+</html>
