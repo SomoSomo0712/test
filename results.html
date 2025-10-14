@@ -17,7 +17,7 @@
         </div> -->
         <div class="button-container">
              <a href="index.html" style="text-decoration: none;">
-                <button class="primary">トップページに戻る/Back to the top page</button>
+                <button class="primary">トップページに戻る<br>Back to the top page</button>
             </a>
         </div>
     </div>
@@ -111,7 +111,7 @@
                 body: JSON.stringify(dataToSubmit)
             })
             .then(() => {
-                document.getElementById('submission-status').textContent = '結果が正常に記録されました。/Results have been recorded successfully.';
+                document.getElementById('submission-status').innerHTML = '結果が正常に記録されました。<br>Results have been recorded successfully.';
                 localStorage.removeItem('quizUserInfo');
                 localStorage.removeItem('quizUserResults');
                 localStorage.removeItem('quizTimeLogs');

@@ -223,7 +223,7 @@ const QUIZ_DATA = [
       { // 4問目
         text: "話者が話した「シンクロニシティ」について、どのように述べられていますか？<br>How did the store interviewees explain the \"synchronicity\" they mentioned?",
         options: ["同じ趣味を持つ人々が自然と集まること <br> People with the same interests naturally come together.", "音楽のリズムやタイミングが完全に一致すること <br> The rhythm and timing of the music match perfectly.", "出会いは偶然ではなく必然であり、お店で人との再会などが起きていること <br> Encounters are not coincidences but fate, and it is not uncommon to meet people again at the store.", "目標を立てると、不思議とそれが現実になること <br> When you set a goal, it miraculously becomes a reality.", "わからない / I don't know"],
-        correctAnswer: "目標を立てると、不思議とそれが現実になること <br> When you set a goal, it miraculously becomes a reality."
+        correctAnswer: "出会いは偶然ではなく必然であり、お店で人との再会などが起きていること <br> Encounters are not coincidences but fate, and it is not uncommon to meet people again at the store."
       },
       { // 5問目
         text: "話者がコーヒーショップを経営する「理由」や「やりがい」として特に強調していたことは何ですか？<br>What did the interviewees particularly emphasise as their “reason” or “reward” for running a coffee shop?",
