@@ -40,8 +40,8 @@
         <div class="button-container">
             <button id="back-btn" class="secondary">戻る<br>Go Back</button>
             <!-- ▼▼▼「動画に戻る」ボタンを追加 ▼▼▼ -->
-            <button id="video-btn" class="secondary">このビデオに戻る/Return to this video</button>
-            <button id="next-btn" class="primary">次へ/Next</button>
+            <button id="video-btn" class="secondary">このビデオに戻る<br>Return to this video</button>
+            <button id="next-btn" class="primary">次へ<br>Next</button>
         </div>
     </div>
 
@@ -65,8 +65,8 @@
 
         const quiz = QUIZ_DATA.find(q => q.id == quizId);
         document.title = `フィードバック/Feedback - ${quiz.title}`;
-        document.getElementById('feedback-title').textContent = `「${quiz.title}」についてのフィードバック/Feedback on "${quiz.title}"`;
-        document.getElementById('next-btn').textContent = isLastQuizSet ? '最終結果を見る/See the final result' : '次のビデオへ/Next Video';
+        document.getElementById('feedback-title').textContent = `「${quiz.title}」についてのフィードバック<br>Feedback on "${quiz.title}"`;
+        document.getElementById('next-btn').textContent = isLastQuizSet ? '最終結果画面へ<br>Go to the final page' : '次のビデオへ<br>Next Video';
 
         document.getElementById('back-btn').onclick = () => {
             const lastQuestionIndex = quiz.questions.length - 1;

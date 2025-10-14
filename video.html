@@ -14,8 +14,8 @@
             <iframe id="youtube-player" src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
         <div class="button-container">
-            <button id="back-btn" class="secondary" style="display: none;">前のセクションに戻る/Go back to the previous section</button>
-            <button id="start-quiz-btn" class="primary">テストを開始する/Test Start</button>
+            <button id="back-btn" class="secondary" style="display: none;">前のセクションに戻る<br>Go back to the previous section</button>
+            <button id="start-quiz-btn" class="primary">テストを開始する<br>Test Start</button>
         </div>
         <div id="jump-back-container" style="margin-top: 2em; text-align: center;">
             <!-- ここに「中断した場所に戻る」ボタンが動的に生成されます -->
@@ -93,7 +93,7 @@
                     } else if (lastViewed.type === 'problem') {
                         // もし問題ページから来たなら
                         const lastProblemNum = lastViewed.index + 1;
-                        resumeButton.textContent = `問題${lastProblemNum}に戻る/Return to problem ${lastProblemNum}`;
+                        resumeButton.textContent = `問題${lastProblemNum}に戻る<br>Return to question ${lastProblemNum}`;
                         resumeButton.onclick = () => {
                             window.location.href = `problem.html?quiz=${lastViewed.quizId}&q=${lastViewed.index}`;
                         };
