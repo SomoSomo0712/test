@@ -34,7 +34,7 @@
 
         document.title = `Video${quizId+1} - Q ${questionIndex + 1}`;
         document.getElementById('question-title').textContent = `Video${quizId+1} - Q ${questionIndex + 1}/${quiz.questions.length}`;
-        document.getElementById('question-text').textContent = questionData.text;
+        document.getElementById('question-text').innerHTML = questionData.text;
 
         const optionsContainer = document.getElementById('options-container');
         optionsContainer.innerHTML = '';
@@ -44,6 +44,12 @@
             radio.type = 'radio'; radio.name = 'answer'; radio.value = optionText;
             label.appendChild(radio);
             label.appendChild(document.createTextNode(optionText));
+            optionsContainer.appendChild(label);
+
+            const span = document.createElement('span');
+            span.innerHTML = optionText;
+            label.appendChild(span);
+
             optionsContainer.appendChild(label);
         });
 
