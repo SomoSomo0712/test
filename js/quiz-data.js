@@ -8,9 +8,9 @@ const QUIZ_DATA = [
     videoId: 'u4k7CWtDIwY', // 1番目のビデオID (ご自身のものに書き換えてください)
     questions: [
       { // 1問目
-        text: "1 + 1 はいくつですか？",
-        options: ["1", "2", "3", "4"],
-        correctAnswer: "2"
+        text: "この話者は、お客様に接する上で最も大事なこととして、自分自身がどうあるべきだと語っていますか？<br>What does the interviewee in this documentary say is the most important personal quality when dealing with customers?",
+        options: ["お客様に感動を与えるため、常に完璧な料理を提供し続けること / To constantly provide perfect dishes in order to impress customers.", "お客様との会話を楽しお客様との会話を楽しみ、毎日を息抜きのように感じること / To enjoy conversations with customers and feel as if every day is a break.", "健康であり、笑顔を絶やさずに聞き上手な接待をすること / To be healthy, and to serve customers by being a good listener with a constant smile.", "長年の常連客を大切にし、新しい客とは時間をかけて関係を作ること / To cherish long-time regular customers and take the time to build relationships with new ones."],
+        correctAnswer: "健康であり、笑顔を絶やさずに聞き上手な接待をすること / To be healthy, and to serve customers by being a good listener with a constant smile."
       },
       { // 2問目
         text: "5 x 3 はいくつですか？",
