@@ -9,11 +9,12 @@
 <body>
     <div class="container">
         <h1>最終テスト結果/Final Results</h1>
-        <p id="result-summary"></p>
-        <p id="submission-status"></p>
-        <div id="results-container">
+        <p id="result-summary" class="result-text"></p>
+        <p id="submission-status" class="result-text"></p>
+        <p class="thank-you-message">Thank you for your participation</p>
+        <!-- <div id="results-container">
             <ul id="results-list"></ul>
-        </div>
+        </div> -->
         <div class="button-container">
              <a href="index.html" style="text-decoration: none;">
                 <button class="primary">トップページに戻る/Back to the top page</button>
@@ -77,21 +78,24 @@
             let score = 0;
             userResults.forEach(result => {
                 if (result.isCorrect) score++;
-
-                const quizTitle = QUIZ_DATA.find(q => q.id == result.quizId).title;
-                const li = document.createElement('li');
-                const isFeedback = result.questionIndex >= 5;
-
-                let contentHTML = `<strong>[${quizTitle}] Q${result.questionIndex + 1}: ${result.question}</strong><br>
-                                   あなたの回答/Your Answer: ${result.answer}`;
-                
-                if (!isFeedback) {
-                    const correctIndicator = result.isCorrect ? '✅' : '❌';
-                    contentHTML += ` ${correctIndicator}<br>滞在合計時間: ${result.time} 秒/Total length of stay: ${result.time} seconds`;
-                }
-                li.innerHTML = contentHTML;
-                resultsList.appendChild(li);
             });
+            // userResults.forEach(result => {
+            //     if (result.isCorrect) score++;
+
+            //     const quizTitle = QUIZ_DATA.find(q => q.id == result.quizId).title;
+            //     const li = document.createElement('li');
+            //     const isFeedback = result.questionIndex >= 5;
+
+            //     let contentHTML = `<strong>[${quizTitle}] Q${result.questionIndex + 1}: ${result.question}</strong><br>
+            //                        あなたの回答/Your Answer: ${result.answer}`;
+                
+            //     if (!isFeedback) {
+            //         const correctIndicator = result.isCorrect ? '✅' : '❌';
+            //         contentHTML += ` ${correctIndicator}<br>滞在合計時間: ${result.time} 秒/Total length of stay: ${result.time} seconds`;
+            //     }
+            //     li.innerHTML = contentHTML;
+            //     resultsList.appendChild(li);
+            // });
             
             const totalQuestions = QUIZ_DATA.reduce((total, quiz) => total + quiz.questions.length, 0);
             const scorePercentage = (score / totalQuestions) * 100;
