@@ -65,8 +65,8 @@
 
         const quiz = QUIZ_DATA.find(q => q.id == quizId);
         document.title = `フィードバック/Feedback - ${quiz.title}`;
-        document.getElementById('feedback-title').textContent = `「${quiz.title}」についてのフィードバック<br>Feedback on "${quiz.title}"`;
-        document.getElementById('next-btn').textContent = isLastQuizSet ? '最終結果画面へ<br>Go to the final page' : '次のビデオへ<br>Next Video';
+        document.getElementById('feedback-title').innerHTML = `「${quiz.title}」についてのフィードバック<br>Feedback on "${quiz.title}"`;
+        document.getElementById('next-btn').innerHTML = isLastQuizSet ? '最終結果画面へ<br>Go to the final page' : '次のビデオへ<br>Next Video';
 
         document.getElementById('back-btn').onclick = () => {
             const lastQuestionIndex = quiz.questions.length - 1;
