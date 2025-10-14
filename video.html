@@ -86,14 +86,14 @@
 
                     if (lastViewed.type === 'feedback') {
                         // もしフィードバックページから来たなら
-                        resumeButton.textContent = `フィードバックに戻る/Return to feedback`;
+                        resumeButton.innerHTML = `フィードバックに戻る<br>Return to Feedback`;
                         resumeButton.onclick = () => {
                             window.location.href = `feedback.html?quiz=${lastViewed.quizId}`;
                         };
                     } else if (lastViewed.type === 'problem') {
                         // もし問題ページから来たなら
                         const lastProblemNum = lastViewed.index + 1;
-                        resumeButton.textContent = `問題${lastProblemNum}に戻る<br>Return to question ${lastProblemNum}`;
+                        resumeButton.innerHTML = `問題${lastProblemNum}に戻る<br>Return to Question ${lastProblemNum}`;
                         resumeButton.onclick = () => {
                             window.location.href = `problem.html?quiz=${lastViewed.quizId}&q=${lastViewed.index}`;
                         };
