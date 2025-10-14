@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>総合フィードバック</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        textarea { width: 100%; min-height: 80px; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-family: inherit; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>クイズ全体のフィードバック<br>Overall Feedback</h2>
+        <p style="text-align: left; margin-bottom: 2em;">最後に、実験全体に関するご意見をお聞かせください。<br>Finally, please let us know your thoughts on the experiment as a whole.</p>
+
+        <div class="form-group">
+            <label for="fb-understood">よく理解できたと思うビデオとその理由を教えてください<br>Which video do you think you understood well and why?</label>
+            <textarea id="fb-understood" required></textarea>
+        </div>
+        <div class="form-group">
+            <label for="fb-not-understood">よく理解できなかったと思うビデオとその理由を教えてください<br>Which video do you think you did not understand well and why?</label>
+            <textarea id="fb-not-understood" required></textarea>
+        </div>
+        <div class="form-group">
+            <label for="fb-subtitles">字幕について違和感があった部分を教えてください。<br>What did you find uncomfortable about the subtitles?</label>
+            <textarea id="fb-subtitles" required></textarea>
+        </div>
+        <div class="form-group">
+            <label for="fb-video-impression">ビデオの印象についてなんでも思ったことを教えてください<br>Tell us what you think about the videos</label>
+            <textarea id="fb-video-impression" required></textarea>
+        </div>
+        <div class="form-group">
+            <label for="fb-quiz-impression">クイズの印象についてなんでも思ったことを教えてください<br>Tell us what you think about the quiz</label>
+            <textarea id="fb-quiz-impression" required></textarea>
+        </div>
+        
+        <div class="button-container">
+            <button id="back-btn" class="secondary">戻る<br>Go Back</button>
+            <button id="next-btn" class="primary">最終画面へ<br>To Final Page</button>
+        </div>
+    </div>
+    <script>
+        // 戻るボタンは、必ず最後のビデオセット(id=6)のフィードバックページに戻る
+        document.getElementById('back-btn').onclick = () => {
+            window.location.href = `feedback.html?quiz=6`;
+        };
+
+        document.getElementById('next-btn').addEventListener('click', () => {
+            const finalFeedback = {
+                understood: document.getElementById('fb-understood').value,
+                notUnderstood: document.getElementById('fb-not-understood').value,
+                subtitles: document.getElementById('fb-subtitles').value,
+                videoImpression: document.getElementById('fb-video-impression').value,
+                quizImpression: document.getElementById('fb-quiz-impression').value
+            };
+
+            // すべての欄が入力されているか簡易チェック
+            for (const key in finalFeedback) {
+                if (!finalFeedback[key].trim()) {
+                    alert('すべての項目を入力してください。/Please fill in all the fields.');
+                    return;
+                }
+            }
+
+            // localStorageに総合フィードバックを保存
+            localStorage.setItem('quizFinalFeedback', JSON.stringify(finalFeedback));
+
+            // 結果ページへ移動
+            window.location.href = 'results.html';
+        });
+    </script>
+</body>
+</html>
