@@ -52,6 +52,7 @@
             let userResults = JSON.parse(localStorage.getItem('quizUserResults'));
             const timeLogs = JSON.parse(localStorage.getItem('quizTimeLogs'));
             const pathLogArray = JSON.parse(localStorage.getItem('quizPathLog'));
+            const finalFeedback = JSON.parse(localStorage.getItem('quizFinalFeedback'));
 
             if (!userInfo || !userResults) {
                 document.body.innerHTML = '<h1>エラー: テストデータが見つかりませんでした。</h1>/<h1>Error: Test data not found.</h1>';
@@ -103,7 +104,7 @@
             // resultSummary.innerHTML = `正解数: ${score} / ${totalQuestions} (${scorePercentage.toFixed(0)}%) <br> 全ての学習お疲れ様でした。/Number of correct answers: ${score} / ${totalQuestions} (${scorePercentage.toFixed(0)}%) <br> Thank you for completing all the lessons.`;
 
             document.getElementById('submission-status').textContent = '結果を送信中...   リロードしないでください/Sending results...   Please do not reload.';
-            const dataToSubmit = { userInfo, userResults, score, scorePercentage: `${scorePercentage.toFixed(0)}%`, pathLog };
+            const dataToSubmit = { userInfo, userResults, score, scorePercentage: `${scorePercentage.toFixed(0)}%`, pathLog, finalFeedback };
             
             fetch(GAS_WEB_APP_URL, {
                 method: 'POST', mode: 'no-cors', cache: 'no-cache',
@@ -117,6 +118,7 @@
                 localStorage.removeItem('quizTimeLogs');
                 localStorage.removeItem('quizPathLog');
                 localStorage.removeItem('quizLastViewed');
+                localStorage.removeItem('quizFinalFeedback');
             })
             .catch(error => {
                 console.error('Error:', error);
