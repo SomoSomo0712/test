@@ -108,12 +108,12 @@ const QUIZ_DATA = [
     questions: [
       { // 1問目
         text: "話者は、具体的にいつからテニスショップでアルバイトを始めたと述べていますか？<br>Specifically, when did the interviewee say he started working part-time at the tennis shop?",
-        options: ["学生時代にテニスを始めたばかりの頃 <br> When he first started playing tennis as a student.", "学生としてテニスのトーナメントに出ていた時期 <br> When he was playing tennis tournaments as a student.", "大会の引退後 <br> After his last competition.", "就職活動中 / While job-hunting.", "わからない / I don't know"],
+        options: ["学生時代にテニスを始めたばかりの頃 <br> When he first started playing tennis as a student.", "学生としてテニスのトーナメントに出ていた時期 <br> When he was playing tennis tournaments as a student.", "大会の引退後 <br> After his last competition.", "就職活動中 <br> While job-hunting.", "わからない / I don't know"],
         correctAnswer: "大会の引退後 <br> After his last competition."
       },
       { // 2問目
         text: "話者は、ラケットのストリンギング（ガット張り）の技術について、どのように身につけたと述べていますか？<br>How does the interviewee describe how he learned the technique of stringing a racket?",
-        options: ["先輩やコーチに教わった <br> He learned from his seniors and coaches.", "自分自身で試行錯誤しながら独学で習得した <br> He learned it by himself through trial and error.", "アルバイト先のテニスショップで教わった <br> He learned it at the tennis shop where he worked part-time.", "ラケットメーカーの研修プログラムで修了した / Completed a training program for a racket manufacturer.", "わからない / I don't know"],
+        options: ["先輩やコーチに教わった <br> He learned from his seniors and coaches.", "自分自身で試行錯誤しながら独学で習得した <br> He learned it by himself through trial and error.", "アルバイト先のテニスショップで教わった <br> He learned it at the tennis shop where he worked part-time.", "ラケットメーカーの研修プログラムで修了した <br> Completed a training program for a racket manufacturer.", "わからない / I don't know"],
         correctAnswer: "アルバイト先のテニスショップで教わった <br> He learned it at the tennis shop where he worked part-time."
       },
       { // 3問目
@@ -184,7 +184,7 @@ const QUIZ_DATA = [
       },
       { // 3問目
         text: "インタビューの中で、サークルの特に盛り上がる活動として挙げられていたものはどれですか？<br>In the interview, what activities were mentioned as particularly exciting for the club?",
-        options: ["毎日のように行う練習試合 <br> Practice matches almost every day.", "年に数回の合宿と、定期的な競技大会 <br> Several training camps per year and regular competitions.", "旅行や逃走中、運動会などのイベント <br> Events such as travel, \"On the run\", and sports days.", "他の大学との交流戦 / Inter-university games.", "わからない / I don't know"],
+        options: ["毎日のように行う練習試合 <br> Practice matches almost every day.", "年に数回の合宿と、定期的な競技大会 <br> Several training camps per year and regular competitions.", "旅行や逃走中、運動会などのイベント <br> Events such as travel, \"On the run\", and sports days.", "他の大学との交流戦 <br> Inter-university games.", "わからない / I don't know"],
         correctAnswer: "旅行や逃走中、運動会などのイベント <br> Events such as travel, \"On the run\", and sports days."
       },
       { // 4問目
