@@ -99,7 +99,8 @@
             
             const totalQuestions = QUIZ_DATA.reduce((total, quiz) => total + quiz.questions.length, 0);
             const scorePercentage = (score / totalQuestions) * 100;
-            resultSummary.innerHTML = `正解数: ${score} / ${totalQuestions} (${scorePercentage.toFixed(0)}%) <br> 全ての学習お疲れ様でした。/Number of correct answers: ${score} / ${totalQuestions} (${scorePercentage.toFixed(0)}%) <br> Thank you for completing all the lessons.`;
+            resultSummary.innerHTML = `テストは完了しました。<br>データを記録しています。<br>The test has been completed.<br>Data recording.`; // ← 新しいメッセージ
+            // resultSummary.innerHTML = `正解数: ${score} / ${totalQuestions} (${scorePercentage.toFixed(0)}%) <br> 全ての学習お疲れ様でした。/Number of correct answers: ${score} / ${totalQuestions} (${scorePercentage.toFixed(0)}%) <br> Thank you for completing all the lessons.`;
 
             document.getElementById('submission-status').textContent = '結果を送信中...   リロードしないでください/Sending results...   Please do not reload.';
             const dataToSubmit = { userInfo, userResults, score, scorePercentage: `${scorePercentage.toFixed(0)}%`, pathLog };
